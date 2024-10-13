@@ -50,7 +50,7 @@ function App() {
         onClick={() => setDarkMode(!darkMode)}
         className="absolute top-4 right-4 text-white bg-blue-600 p-2 rounded-full shadow-lg transition transform hover:scale-110"
       >
-        Toggle {darkMode ? "Light" : "Dark"} Mode
+       {darkMode ? "Light" : "Dark"} Mode
       </button>
       <div className={`w-full max-w-4xl flex flex-col h-[90vh] rounded-3xl shadow-2xl ${darkMode ? "bg-gray-800" : "bg-white/10"} p-6 overflow-hidden backdrop-blur-lg border border-white/20 transition-all duration-300`}>
         <h1 className={`text-4xl sm:text-5xl md:text-6xl font-extrabold ${darkMode ? "text-white" : "text-gray-800"} mb-6 flex items-center gap-4 bg-gradient-to-r from-blue-800 to-teal-900 p-3 rounded-full shadow-lg transform hover:scale-105 transition duration-300 justify-center`}>
