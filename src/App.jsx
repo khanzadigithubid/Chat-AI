@@ -9,6 +9,7 @@ function App() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [generatingAnswer, setGeneratingAnswer] = useState(false);
+  const [darkMode, setDarkMode] = useState(false); // State for dark mode
 
   async function generateAnswer(e) {
     e.preventDefault();
@@ -43,20 +44,24 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className={`min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden ${darkMode ? "bg-gray-900" : "bg-gradient-to-br from-blue-900 to-white"}`}>
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-      <div className="w-full max-w-4xl flex flex-col h-[90vh] rounded-3xl shadow-2xl bg-white/10 p-6 overflow-hidden backdrop-blur-lg border border-white/20 transition-all duration-300">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-6 flex items-center gap-4 bg-gradient-to-r from-blue-800 to-teal-900 p-3 rounded-full shadow-lg transform hover:scale-105 transition duration-300 justify-center">
-          <FaRobot className="text-white text-3xl sm:text-4xl md:text-5xl" />
-          Fatima AI
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="absolute top-4 right-4 text-white bg-blue-600 p-2 rounded-full shadow-lg transition transform hover:scale-110"
+      >
+        Toggle {darkMode ? "Light" : "Dark"} Mode
+      </button>
+      <div className={`w-full max-w-4xl flex flex-col h-[90vh] rounded-3xl shadow-2xl ${darkMode ? "bg-gray-800" : "bg-white/10"} p-6 overflow-hidden backdrop-blur-lg border border-white/20 transition-all duration-300`}>
+        <h1 className={`text-4xl sm:text-5xl md:text-6xl font-extrabold ${darkMode ? "text-white" : "text-gray-800"} mb-6 flex items-center gap-4 bg-gradient-to-r from-blue-800 to-teal-900 p-3 rounded-full shadow-lg transform hover:scale-105 transition duration-300 justify-center`}>
+          <FaRobot className={`text-3xl sm:text-4xl md:text-5xl ${darkMode ? "text-white" : "text-gray-900"}`} />
+          Chat AI
         </h1>
-        <div className="flex-grow w-full overflow-y-auto p-4 rounded-3xl bg-white/30 shadow-inner backdrop-blur-md border border-gray-300 transition-all duration-300">
+        <div className={`flex-grow w-full overflow-y-auto p-4 rounded-3xl ${darkMode ? "bg-gray-700" : "bg-white/30"} shadow-inner backdrop-blur-md border border-gray-300 transition-all duration-300`}>
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`flex items-start gap-3 my-3 ${
-                msg.role === "user" ? "self-end flex-row-reverse" : "self-start"
-              }`}
+              className={`flex items-start gap-3 my-3 ${msg.role === "user" ? "self-end flex-row-reverse" : "self-start"}`}
             >
               {msg.role === "user" ? (
                 <FaUserCircle className="text-indigo-400 text-3xl sm:text-4xl md:text-5xl" />
@@ -64,10 +69,10 @@ function App() {
                 <FaRobot className="text-teal-300 text-3xl sm:text-4xl md:text-5xl" />
               )}
               <div
-                className={`p-3 md:p-4 rounded-2xl w-fit max-w-full md:max-w-xs shadow-lg transition-all duration-300 transform ${
+                className={`p-3 md:p-4 rounded-2xl w-fit max-w-full md:max-w-xs shadow-lg transition-all duration-300 transform animate-pulse ${
                   msg.role === "user"
-                    ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
-                    : "bg-gradient-to-r from-green-100 to-blue-200 text-gray-900"
+                    ? "bg-gradient-to-r from-indigo-400 to-purple-600 text-white"
+                    : "bg-gradient-to-r from-green-200 to-blue-400 text-gray-900"
                 }`}
               >
                 {msg.content}
@@ -75,13 +80,10 @@ function App() {
             </div>
           ))}
         </div>
-        <form
-          onSubmit={generateAnswer}
-          className="w-full flex items-center gap-3 mt-4"
-        >
+        <form onSubmit={generateAnswer} className="w-full flex flex-col sm:flex-row items-center gap-3 mt-4">
           <textarea
             required
-            className="flex-grow border border-gray-600 rounded-3xl min-h-[50px] p-3 transition-all duration-300 focus:border-purple-500 focus:shadow-xl resize-none backdrop-blur-md bg-white/10 text-white"
+            className={`flex-grow border border-gray-600 rounded-3xl min-h-[50px] p-3 transition-all duration-300 focus:border-purple-500 focus:shadow-xl resize-none backdrop-blur-md ${darkMode ? "bg-gray-800 text-white" : "bg-white/10 text-black"}`}
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Type your question here..."
@@ -89,9 +91,7 @@ function App() {
           ></textarea>
           <button
             type="submit"
-            className={`bg-gradient-to-r from-yellow-500 to-orange-500 text-white p-4 rounded-full hover:bg-orange-600 transition-all duration-300 transform hover:scale-110 shadow-lg flex items-center justify-center ${
-              generatingAnswer ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`bg-gradient-to-r from-yellow-500 to-orange-500 text-white p-4 rounded-full hover:bg-orange-600 transition-all duration-300 transform hover:scale-110 shadow-lg flex items-center justify-center ${generatingAnswer ? "opacity-50 cursor-not-allowed" : ""}`}
             disabled={generatingAnswer}
           >
             <FiSend className="text-2xl" />
